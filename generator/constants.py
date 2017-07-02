@@ -1,15 +1,14 @@
 import os.path
 
-# Paths
-OUTPUT_PATH = os.path.join(os.pardir, os.pardir, 'dataset')
-SPRITES_DIR = os.path.join(os.pardir, os.pardir, 'sprites')
+# Paths and dataset folder structure
+OUTPUT_PATH = os.path.join(os.getcwd(), 'dataset')
+SPRITES_DIR = os.path.join(os.getcwd(), 'sprites')
 
-# Output data paths and structure
 DATASET_IMAGES_DIR = 'images'
 DATASET_IMAGES_ANNOTATED_DIR = 'images_annotated'
 DATASET_VIDEO_FILE = 'video.mp4'
 DATASET_VIDEO_ANNOTATED_FILE = 'video_annotated.mp4'
-DATASET_LABELS_FILE = 'labels.txt'
+DATASET_LABELS_FILE = 'labels.csv'
 FRAME_IMAGE_FILE_NAME_FORMAT = 'image%05d.png'
 
 TRAINING_DATASET_PATH = 'training'
@@ -20,12 +19,12 @@ TEST_DATASET_PATH = 'test'
 RESOLUTION_WIDTH = 200
 RESOLUTION_HEIGHT = 200
 FRAMES_PER_SECOND = 8
-
 FRAME_COUNT_TRAINING = 9000
 FRAME_COUNT_VALIDATION = 1000
 FRAME_COUNT_TEST = 1000
 
-# Sprite movement
+# Image content properties
+#   Sprite movement
 AVERAGE_SPRITE_COUNT = 2
 SPRITE_MIN_SCALE = 0.1
 
@@ -33,3 +32,10 @@ ALLOW_SPRITE_SHEARING = False
 
 MEAN_SPRITE_MOVEMENT_SPEED = RESOLUTION_WIDTH / 7  # Pixels per second
 MEAN_SPRITE_SCALE_SPEED = 0.01  # Absolute scale per second
+
+#   Noise
+BACKGROUND_NOISE_SCALE = 20
+BACKGROUND_COLOR_COMPONENT_MAX_DELTA = 120 / FRAMES_PER_SECOND
+BACKGROUND_COLOR_BRIGHTNESS_MAX_DELTA = 210 / FRAMES_PER_SECOND
+
+OVERALL_NOISE_SCALE = 15
