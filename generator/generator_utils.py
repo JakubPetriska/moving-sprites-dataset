@@ -3,7 +3,7 @@ import os
 from ast import literal_eval as make_tuple
 from scipy import misc
 
-from toy_dataset_generator import constants
+from generator import constants
 
 LABELS_FILE_DELIMITER = ';'
 

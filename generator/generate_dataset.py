@@ -6,9 +6,9 @@ import numpy as np
 import shutil
 from scipy import misc
 
-from toy_dataset_generator import constants
-from toy_dataset_generator import generator_utils
-from common import utils
+from generator import constants
+from generator import generator_utils
+from utils import timing
 
 SHOW_VIDEO_ENCODING_INFO_LOG = False
 SHOW_TIME_LOG = True
@@ -194,7 +194,7 @@ def generate_sequence(frame_count, folder_path):
 
     # Generate the video frames
     sequence_generator = SequenceGenerator(sprites)
-    frame_generation_start = utils.start_timer()
+    frame_generation_start = timing.start_timer()
     frame_image_path_format = os.path.join(images_dir, constants.FRAME_IMAGE_FILE_NAME_FORMAT)
     sequence_labels = []
     for i in range(0, frame_count):
@@ -202,44 +202,45 @@ def generate_sequence(frame_count, folder_path):
         sequence_labels.append([i] + frame_labels)
         misc.imsave(frame_image_path_format % i, frame)
 
-    frames_generation_duration = utils.get_duration_secs(frame_generation_start)
+    frames_generation_duration = timing.get_duration_secs(frame_generation_start)
     print('\tFrames generated')
     if SHOW_TIME_LOG:
         print('\t\tGenerated %d frames in %.1f seconds, average time per frame is %f seconds'
               % (frame_count, frames_generation_duration, frames_generation_duration / frame_count))
 
     # Generate video file
-    video_encoding_start = utils.start_timer()
+    video_encoding_start = timing.start_timer()
     generator_utils.create_video(images_dir, os.path.join(folder_path, constants.DATASET_VIDEO_FILE),
                                  SHOW_VIDEO_ENCODING_INFO_LOG)
     print('\tVideo file generated')
     if SHOW_TIME_LOG:
-        print('\t\tGenerated video in %.1f seconds' % utils.get_duration_secs(video_encoding_start))
+        print('\t\tGenerated video in %.1f seconds' % timing.get_duration_secs(video_encoding_start))
 
     generator_utils.write_labels(os.path.join(folder_path, constants.DATASET_LABELS_FILE), sequence_labels)
     print('\tLabels saved')
 
-    annotation_start = utils.start_timer()
+    annotation_start = timing.start_timer()
     generator_utils.annotate_dataset(images_dir, os.path.join(folder_path, constants.DATASET_LABELS_FILE),
                                      os.path.join(folder_path, constants.DATASET_IMAGES_ANNOTATED_DIR),
                                      os.path.join(folder_path, constants.DATASET_VIDEO_ANNOTATED_FILE),
                                      SHOW_VIDEO_ENCODING_INFO_LOG)
     print('\tAnnotated data created')
     if SHOW_TIME_LOG:
-        print('\t\tAnnotated dataset in %.1f seconds' % utils.get_duration_secs(annotation_start))
+        print('\t\tAnnotated dataset in %.1f seconds' % timing.get_duration_secs(annotation_start))
 
 
-if os.path.exists(constants.OUTPUT_PATH):
-    print('Old dataset needs to be removed')
-    input('Are you sure? (Press Enter to continue)')
-    shutil.rmtree(constants.OUTPUT_PATH, ignore_errors=True)
+if __name__ == "__main__":
+    if os.path.exists(constants.OUTPUT_PATH):
+        print('Old dataset needs to be removed')
+        input('Are you sure? (Press Enter to continue)')
+        shutil.rmtree(constants.OUTPUT_PATH, ignore_errors=True)
 
-print('Generating training data')
-generate_sequence(constants.FRAME_COUNT_TRAINING,
-                  os.path.join(constants.OUTPUT_PATH, constants.TRAINING_DATASET_PATH))
-print('Generating validation data')
-generate_sequence(constants.FRAME_COUNT_VALIDATION,
-                  os.path.join(constants.OUTPUT_PATH, constants.VALIDATION_DATASET_PATH))
-print('Generating test data')
-generate_sequence(constants.FRAME_COUNT_TEST,
-                  os.path.join(constants.OUTPUT_PATH, constants.TEST_DATASET_PATH))
+    print('Generating training data')
+    generate_sequence(constants.FRAME_COUNT_TRAINING,
+                      os.path.join(constants.OUTPUT_PATH, constants.TRAINING_DATASET_PATH))
+    print('Generating validation data')
+    generate_sequence(constants.FRAME_COUNT_VALIDATION,
+                      os.path.join(constants.OUTPUT_PATH, constants.VALIDATION_DATASET_PATH))
+    print('Generating test data')
+    generate_sequence(constants.FRAME_COUNT_TEST,
+                      os.path.join(constants.OUTPUT_PATH, constants.TEST_DATASET_PATH))
