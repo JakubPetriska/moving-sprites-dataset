@@ -18,6 +18,7 @@ from utils import timing
 
 SHOW_VIDEO_ENCODING_INFO_LOG = False
 SHOW_TIME_LOG = False
+CREATE_ANNOTATED_DATASET = False
 
 
 def generate_sequence(frame_count, folder_path):
@@ -70,14 +71,15 @@ def generate_sequence(frame_count, folder_path):
     utils.write_labels(os.path.join(folder_path, constants.DATASET_LABELS_FILE), sequence_labels)
     print('\tLabels saved')
 
-    annotation_start = timing.start_timer()
-    utils.annotate_dataset(images_dir, os.path.join(folder_path, constants.DATASET_LABELS_FILE),
-                           os.path.join(folder_path, constants.DATASET_IMAGES_ANNOTATED_DIR),
-                           os.path.join(folder_path, constants.DATASET_VIDEO_ANNOTATED_FILE),
-                           SHOW_VIDEO_ENCODING_INFO_LOG)
-    print('\tAnnotated data created')
-    if SHOW_TIME_LOG:
-        print('\t\tAnnotated dataset in %.1f seconds' % timing.get_duration_secs(annotation_start))
+    if CREATE_ANNOTATED_DATASET:
+        annotation_start = timing.start_timer()
+        utils.annotate_dataset(images_dir, os.path.join(folder_path, constants.DATASET_LABELS_FILE),
+                               os.path.join(folder_path, constants.DATASET_IMAGES_ANNOTATED_DIR),
+                               os.path.join(folder_path, constants.DATASET_VIDEO_ANNOTATED_FILE),
+                               SHOW_VIDEO_ENCODING_INFO_LOG)
+        print('\tAnnotated data created')
+        if SHOW_TIME_LOG:
+            print('\t\tAnnotated dataset in %.1f seconds' % timing.get_duration_secs(annotation_start))
 
 
 if __name__ == "__main__":
