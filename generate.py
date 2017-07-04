@@ -4,6 +4,7 @@ import shutil
 from os import listdir
 
 from scipy import misc
+import numpy as np
 
 try:
     from tqdm import tqdm
@@ -35,7 +36,8 @@ def generate_sequence(frame_count, folder_path):
         scaled_shape = [int(d * scale_factor) for d in image.shape]
         scaled_shape[2:] = image.shape[2:]
         image = misc.imresize(image, scaled_shape)
-        sprites.append((sprite_type, image))
+        image_flipped = np.flip(np.copy(image), 1)
+        sprites.append((sprite_type, image, image_flipped))
 
     # Generate the video frames
     sequence_generator = SequenceGenerator(sprites)

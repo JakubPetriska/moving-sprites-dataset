@@ -25,7 +25,9 @@ class SequenceGenerator:
 
     def _spawn_sprite(self):
         sprite = random.choice(self.sprites)
-        sprite_image = sprite[1]
+        # Select flipped sprite image with 50% probability
+        sprite_image_index = random.randrange(1, 3)
+        sprite_image = sprite[sprite_image_index]
         half_shape = np.array(sprite_image.shape) / 2
         initial_position = np.array((random.randrange(0, constants.RESOLUTION_HEIGHT) - half_shape[0],
                                      random.randrange(0, constants.RESOLUTION_WIDTH) - half_shape[1]))
