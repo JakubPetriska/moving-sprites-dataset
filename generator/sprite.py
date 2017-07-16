@@ -20,7 +20,7 @@ class Sprite:
     def increase_lifetime(self):
         self.lifetime += 1 / constants.FRAMES_PER_SECOND
 
-    def render(self, frame, render_rectangle=False):
+    def render(self, frame):
         position = np.round(self.movement_function(self.initial_position, self.lifetime, self.velocity)) \
             .astype(np.int64)
         scale = self.scale_function(self.initial_scale, self.lifetime, self.scale_speed)
@@ -57,14 +57,5 @@ class Sprite:
                 position[1]:position[1] + scaled_sprite.shape[1], i] \
                     += scaled_sprite[:, :, i] * sprite_alpha
 
-            if render_rectangle:
-                frame[top:bottom, left:left + 1, 0] = 255
-                frame[top:bottom, left:left + 1, 1:] = 0
-                frame[top:bottom, right:right + 1, 0] = 255
-                frame[top:bottom, right:right + 1, 1:] = 0
-                frame[top:top + 1, left:right, 0] = 255
-                frame[top:top + 1, left:right, 1:] = 0
-                frame[bottom:bottom + 1, left:right, 0] = 255
-                frame[bottom:bottom + 1, left:right, 1:] = 0
             return 0 if overlap_top > 0 else top, bottom - overlap_bottom, \
                    0 if overlap_left > 0 else left, right - overlap_right

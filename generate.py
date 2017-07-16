@@ -3,8 +3,8 @@ import os.path
 import shutil
 from os import listdir
 
-from scipy import misc
 import numpy as np
+from scipy import misc
 
 try:
     from tqdm import tqdm

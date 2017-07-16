@@ -1,6 +1,7 @@
 import csv
 import os
 from ast import literal_eval as make_tuple
+
 from scipy import misc
 
 from generator import constants
@@ -15,20 +16,20 @@ def create_video(images_dir, output_file_path, show_encoding_info=False):
                  output_file_path))
 
 
-def write_labels(output_path, labels):
-    with open(output_path, 'w', newline='') as labels_file:
+def write_labels(labels_file_path, labels):
+    with open(labels_file_path, 'w', newline='') as labels_file:
         labels_writer = csv.writer(labels_file, delimiter=LABELS_FILE_DELIMITER)
         for frame_labels in labels:
             labels_writer.writerow(frame_labels)
 
 
-def read_labels(input_path):
+def read_labels(labels_file_path):
     labels = []
-    with open(input_path, newline='') as labels_file:
+    with open(labels_file_path, newline='') as labels_file:
         labels_reader = csv.reader(labels_file, delimiter=LABELS_FILE_DELIMITER)
         for row in labels_reader:
             row[0] = int(row[0])
-            for i in range(1,len(row)):
+            for i in range(1, len(row)):
                 row[i] = make_tuple(row[i])
                 pass
             labels.append(row)
@@ -50,7 +51,7 @@ def annotate_dataset(dataset_images_dir, labels_file_path, output_annotated_imag
             object_label = frame_labels[i]
             object_type = object_label[0]
             if allowed_types and object_type not in allowed_types:
-                # If object is not allowed skip drawing it's frame
+                # If object is not allowed skip drawing it into the frame
                 continue
             object_bounding_box = object_label[1]
             top = object_bounding_box[0]
