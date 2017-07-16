@@ -1,10 +1,10 @@
 # Moving sprites dataset
 
-This repo contains generator for a image/video dataset
+Generator for a image/video dataset
 comprising of sprites randomly moving and resizing.
 Dataset was created in order to provide simple
 task for object localization in images and video and
-used in
+to be used in
 [github.com/JakubPetriska/moving-sprites-object-detection](https://github.com/JakubPetriska/moving-sprites-object-detection).
 
 By default generator generates 9000 training frames,
